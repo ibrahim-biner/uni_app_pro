@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Ol</title>
+</head>
+<body>
+    <h2>Kullanıcı Kaydı</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Kullanıcıyı Kaydet</button>
+    </form>
+    <a href="{% url 'login' %}">Giriş Yap</a>
+</body>
+</html>

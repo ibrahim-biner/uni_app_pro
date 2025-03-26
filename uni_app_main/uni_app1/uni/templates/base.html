@@ -1,0 +1,32 @@
+
+
+{% block content %}
+    <h2>Hoşgeldiniz, {{ user.username }}!</h2>
+    <p>Rolünüz: {{ user_role }}</p>
+
+    {% if user_role == "bolum_baskani" %}
+        <h3>Bölüm Başkanı Paneli</h3>
+        <ul>
+            <li><a href="{% url 'user_register' %}">Kullanıcı Ekle</a></li>
+            <li><a href="{% url 'assign_roles' %}">Yetki Atama</a></li>
+        </ul>
+    {% elif user_role == "bolum_sekreteri" %}
+        <h3>Bölüm Sekreteri Paneli</h3>
+        <ul>
+            <li><a href="{% url 'user_register' %}">Kullanıcı Ekle</a></li>
+        </ul>
+    {% elif user_role == "akademisyen" %}
+        <h3>Akademisyen Paneli</h3>
+        <ul>
+            <li><a href="#">Ders Listesi</a></li>
+        </ul>
+    {% elif user_role == "ogrenci" %}
+        <h3>Öğrenci Paneli</h3>
+        <ul>
+            <li><a href="#">Ders Kayıtları</a></li>
+        </ul>
+    {% else %}
+        <p>Yetkilendirilmiş bir sayfanız bulunmamaktadır.</p>
+    {% endif %}
+
+{% endblock %}
