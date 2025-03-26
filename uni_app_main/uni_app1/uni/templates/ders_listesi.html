@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Ders Listesi</h2>
+    <ul>
+        {% for ders in dersler %}
+            <li>{{ ders.kod }} - {{ ders.ad }} - {{ ders.kredi }} Kredi</li>
+            <a href="{% url 'ders_duzenle' ders.id %}">Düzenle</a>
+            <a href="{% url 'ders_sil' ders.id %}">Sil</a>
+        {% empty %}
+            <li>Henüz ders eklenmedi.</li>
+        {% endfor %}
+    </ul>
+    <br>
+    <a href="{% url 'ders_ekle' %}">Yeni Ders Ekle</a>
+{% endblock %}

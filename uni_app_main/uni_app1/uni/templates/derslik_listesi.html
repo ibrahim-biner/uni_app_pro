@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Derslik Listesi</h2>
+    <ul>
+        {% for derslik in derslikler %}
+            <li>{{ derslik.ad }} - {{ derslik.kapasite }} Kişilik</li>
+            <a href="{% url 'derslik_sil' derslik.id %}">Sil</a>
+        {% empty %}
+            <li>Henüz derslik eklenmedi.</li>
+        {% endfor %}
+    </ul>
+
+    <br>
+    <a href="{% url 'derslik_ekle' %}">Yeni Derslik Ekle</a>
+{% endblock %}
