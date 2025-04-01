@@ -143,3 +143,9 @@ def derslik_sil(request, derslik_id):
     derslik = get_object_or_404(Derslik, pk=derslik_id)
     derslik.delete()  # Dersliği sil
     return redirect('derslik_listesi')  # Derslik listesine yönlendir
+
+
+def derslik_detay(request, derslik_id):
+    derslik = get_object_or_404(Derslik, pk=derslik_id)
+    dersler = DersProgrami.objects.filter(derslik=derslik)
+    return render(request, "derslik_detay.html", {"derslik": derslik, "dersler": dersler})

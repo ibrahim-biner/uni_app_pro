@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>{{ derslik.ad }} Dersliği</h2>
+    <p>Kapasite: {{ derslik.kapasite }}</p>
+
+    <h3>Atanmış Dersler</h3>
+    <table border="1">
+        <tr>
+            <th>Ders</th>
+            <th>Öğretim Elemanı</th>
+            <th>Gün</th>
+            <th>Başlangıç Saati</th>
+            <th>Bitiş Saati</th>
+        </tr>
+        {% for ders in dersler %}
+        <tr>
+            <td>{{ ders.ders.ad }}</td>  <!-- Ders ismi -->
+            <td>{{ ders.ogretim_elemani }}</td>  <!-- Öğretim elemanı DersProgrami tablosunda -->
+            <td>{{ ders.gun }}</td>  <!-- Gün bilgisi -->
+            <td>{{ ders.baslangic_saati }}</td>  
+            <td>{{ ders.bitis_saati }}</td>  
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">Bu derslikte atanmış ders bulunmamaktadır.</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+    <a href="{% url 'derslik_listesi' %}">Derslik Listesine Geri Dön</a>
+{% endblock %}

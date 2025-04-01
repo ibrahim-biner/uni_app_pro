@@ -6,6 +6,7 @@
         {% for derslik in derslikler %}
             <li>{{ derslik.ad }} - {{ derslik.kapasite }} Kişilik</li>
             <a href="{% url 'derslik_sil' derslik.id %}">Sil</a>
+            <a href="{% url 'derslik_detay' derslik.id %}">Dersleri Görüntüle</a>
         {% empty %}
             <li>Henüz derslik eklenmedi.</li>
         {% endfor %}

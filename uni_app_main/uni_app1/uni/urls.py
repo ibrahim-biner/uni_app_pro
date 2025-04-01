@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 from .views import user_register, user_login, user_logout
 from .views import ders_programi_list, ders_programi_ekle, ders_programi_sil,ders_ekle, derslik_ekle,ders_listesi,derslik_listesi
-from .views import ders_duzenle, ders_sil,derslik_sil
+from .views import ders_duzenle, ders_sil,derslik_sil,derslik_detay
 
 urlpatterns = [
     path("login/", user_login, name="login"),
@@ -19,6 +19,7 @@ urlpatterns = [
     path('ders/duzenle/<int:ders_id>/', ders_duzenle, name='ders_duzenle'),
      path('ders/sil/<int:ders_id>/', ders_sil, name='ders_sil'),
      path('derslik/sil/<int:derslik_id>/', derslik_sil, name='derslik_sil'),
+     path('derslik/<int:derslik_id>/', derslik_detay, name='derslik_detay'),
 ]
     
 
