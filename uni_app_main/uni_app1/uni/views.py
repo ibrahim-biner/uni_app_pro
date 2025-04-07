@@ -243,7 +243,7 @@ def oturma_plani_pdf(request, sinav_id):
                 row.append(ogrenciler[index].username)  # PDF'de username gösterelim
                 index += 1
             else:
-                row.append("Boş")
+                row.append("Bos")
         oturma_duzeni.append(row)
 
     # PDF oluşturma

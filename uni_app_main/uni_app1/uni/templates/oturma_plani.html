@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ sinav.ders.ad }} Sınav Oturma Düzeni</h2>
+<p>Tarih: {{ sinav.tarih }} - Saat: {{ sinav.saat }}</p>
+<p>Derslik: {{ derslik.ad }}</p>
+<p>Gözetmen: {% if sinav.gozetmen %}{{ sinav.gozetmen.username }}{% else %}Yok{% endif %}</p>
+
+<table border="1">
+    {% for row in oturma_duzeni %}
+    <tr>
+        {% for cell in row %}
+        <td>
+            {% if cell %}
+                {% if cell.username %}{{ cell.username }}{% else %}{{ cell }}{% endif %}
+            {% else %}
+                Boş
+            {% endif %}
+        </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+<br>
+<a href="{% url 'oturma_plani_pdf' sinav.id %}"><button>PDF Olarak İndir</button></a>
+{% endblock %}

@@ -17,6 +17,9 @@
             <td>{{ sinav.tarih }}</td>
             <td>{{ sinav.saat }}</td>
             <td>{{ sinav.gozetmen.username }}</td>
+            <td>
+                <a href="{% url 'oturma_plani' sinav.id %}"><button>Oturma Düzeni Oluştur</button></a>
+            </td>
              
         </tr>
         {% empty %}
