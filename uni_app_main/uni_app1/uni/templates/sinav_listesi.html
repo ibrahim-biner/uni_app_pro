@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Sınav Programı Listesi</h2>
+    <table border="1">
+        <tr>
+            <th>Ders</th>
+            <th>Derslik</th>
+            <th>Tarih</th>
+            <th>Saat</th>
+            <th>Gözetmen</th>
+        </tr>
+        {% for sinav in sinavlar %}
+        <tr>
+            <td>{{ sinav.ders.ad }}</td>
+            <td>{{ sinav.derslik.ad }}</td>
+            <td>{{ sinav.tarih }}</td>
+            <td>{{ sinav.saat }}</td>
+            <td>{{ sinav.gozetmen.username }}</td>
+             
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">Henüz sınav programı eklenmemiş.</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <a href="{% url 'sinav_ekle' %}">Yeni Sınav Ekle</a>
+{% endblock %}

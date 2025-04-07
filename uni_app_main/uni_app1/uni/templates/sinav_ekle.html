@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Sınav Programı Ekle</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+        <br><br>
+        <button type="submit">Kaydet</button>
+    </form>
+    <a href="{% url 'sinav_listesi' %}">Sınav Listesine Geri Dön</a>
+
+
+{% endblock %}
+
+
+
