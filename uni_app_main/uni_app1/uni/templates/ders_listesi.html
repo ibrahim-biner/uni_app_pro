@@ -1,16 +1,107 @@
 {% extends "base.html" %}
 
+{% block title %}Ders Listesi{% endblock %}
+
 {% block content %}
+<style>
+    body {
+        background: linear-gradient(to bottom right, #0d1a3a, #1b2c59);
+        font-family: Arial, sans-serif;
+        color: white;
+        min-height: 100vh;
+    }
+
+    .list-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #13254b;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+
+    .list-container h2 {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .ders-item {
+        background-color: #1e3966;
+        padding: 15px 20px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .ders-info {
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .action-buttons a {
+        margin-left: 10px;
+        padding: 6px 12px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .action-buttons .btn-edit {
+        background-color: #0dcaf0;
+        color: #000;
+    }
+
+    .action-buttons .btn-delete {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    .btn-add {
+        display: inline-block;
+        margin-top: 30px;
+        background-color: #198754;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .btn-add:hover {
+        background-color: #157347;
+    }
+
+    .no-data {
+        text-align: center;
+        font-style: italic;
+        color: #ccc;
+    }
+</style>
+
+<div class="list-container">
     <h2>Ders Listesi</h2>
-    <ul>
+
+    {% if dersler %}
         {% for ders in dersler %}
-            <li>{{ ders.kod }} - {{ ders.ad }} - {{ ders.kredi }} Kredi</li>
-            <a href="{% url 'ders_duzenle' ders.id %}">Düzenle</a>
-            <a href="{% url 'ders_sil' ders.id %}">Sil</a>
-        {% empty %}
-            <li>Henüz ders eklenmedi.</li>
+            <div class="ders-item">
+                <div class="ders-info">
+                    {{ ders.kod }} - {{ ders.ad }} - {{ ders.kredi }} Kredi
+                </div>
+                <div class="action-buttons">
+                    <a href="{% url 'ders_duzenle' ders.id %}" class="btn-edit">Düzenle</a>
+                    <a href="{% url 'ders_sil' ders.id %}" class="btn-delete">Sil</a>
+                </div>
+            </div>
         {% endfor %}
-    </ul>
-    <br>
-    <a href="{% url 'ders_ekle' %}">Yeni Ders Ekle</a>
+    {% else %}
+        <p class="no-data">Henüz ders eklenmedi.</p>
+    {% endif %}
+
+    <div class="text-center">
+        <a href="{% url 'ders_ekle' %}" class="btn-add">+ Yeni Ders Ekle</a>
+    </div>
+</div>
 {% endblock %}

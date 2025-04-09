@@ -1,32 +1,109 @@
+{% load widget_tweaks %} 
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Öğrenci Bilgi Sistemi</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom right, #0d1a3a, #223362);
+            font-family: Arial, sans-serif;
+            color: white;
+            min-height: 100vh;
+        }
 
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
 
-{% block content %}
-    <h2>Hoşgeldiniz, {{ user.username }}!</h2>
-    <p>Rolünüz: {{ user_role }}</p>
+        .menu {
+            margin-top: 30px;
+        }
 
-    {% if user_role == "bolum_baskani" %}
-        <h3>Bölüm Başkanı Paneli</h3>
-        <ul>
-            <li><a href="{% url 'user_register' %}">Kullanıcı Ekle</a></li>
-            <li><a href="{% url 'assign_roles' %}">Yetki Atama</a></li>
-        </ul>
-    {% elif user_role == "bolum_sekreteri" %}
-        <h3>Bölüm Sekreteri Paneli</h3>
-        <ul>
-            <li><a href="{% url 'user_register' %}">Kullanıcı Ekle</a></li>
-        </ul>
-    {% elif user_role == "akademisyen" %}
-        <h3>Akademisyen Paneli</h3>
-        <ul>
-            <li><a href="#">Ders Listesi</a></li>
-        </ul>
-    {% elif user_role == "ogrenci" %}
-        <h3>Öğrenci Paneli</h3>
-        <ul>
-            <li><a href="#">Ders Kayıtları</a></li>
-        </ul>
-    {% else %}
-        <p>Yetkilendirilmiş bir sayfanız bulunmamaktadır.</p>
-    {% endif %}
+        .menu h3 {
+            margin-bottom: 20px;
+        }
 
-{% endblock %}
+        .menu ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .menu ul li {
+            margin: 10px 0;
+        }
+
+        .menu ul li a {
+            display: inline-block;
+            background-color: #1e3966;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .menu ul li a:hover {
+            background-color: #2f4f87;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% block content %}
+        <h2>Hoşgeldiniz, {{ user.username }}!</h2>
+        <p>Rolünüz: {{ user_role }}</p>
+
+        <div class="menu">
+            {% if user_role == "bolum_baskani" %}
+                <h3>Bölüm Başkanı Paneli</h3>
+                <ul>
+                    <li><a href="{% url 'user_register' %}">Kullanıcı Ekle</a></li>
+                    <li><a href="{% url 'assign_roles' %}">Yetki Atama</a></li>
+                    <li><a href="{% url 'ders_programi_list' %}">Ders Programı</a></li>
+                    <li><a href="{% url 'sinav_listesi' %}">Sınav Programı</a></li>
+                    <li><a href="{% url 'derslik_listesi' %}">Derslikler</a></li>
+                    <li><a href="{% url 'ders_listesi' %}">Dersler</a></li>
+                </ul>
+
+            {% elif user_role == "bolum_sekreteri" %}
+                <h3>Bölüm Sekreteri Paneli</h3>
+                <ul>
+                    <li><a href="{% url 'user_register' %}">Kullanıcı Ekle</a></li>
+                    <li><a href="{% url 'ders_programi_list' %}">Ders Programı</a></li>
+                    <li><a href="{% url 'sinav_ekle' %}">Sınav Ekle</a></li>
+                </ul>
+
+            {% elif user_role == "akademisyen" %}
+                <h3>Akademisyen Paneli</h3>
+                <ul>
+                    <li><a href="#">Ders Listesi</a></li>
+                </ul>
+
+            {% elif user_role == "ogrenci" %}
+                <h3>Öğrenci Paneli</h3>
+                <ul>
+                    <li><a href="#">Ders Kayıtları</a></li>
+                </ul>
+
+            {% else %}
+                <p>Yetkilendirilmiş bir sayfanız bulunmamaktadır.</p>
+            {% endif %}
+        </div>
+        {% endblock %}
+    </div>
+</body>
+</html>

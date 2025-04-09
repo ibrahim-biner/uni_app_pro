@@ -1,18 +1,107 @@
 {% extends "base.html" %}
 
+{% block title %}Sınav Programı Ekle{% endblock %}
+
 {% block content %}
+<style>
+    body {
+        background: linear-gradient(to bottom right, #0d1a3a, #1b2c59);
+        color: white;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+    }
+
+    .form-box {
+        background-color: #13254b;
+        padding: 40px 30px;
+        border-radius: 15px;
+        width: 500px;
+        margin: 50px auto;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-box h2 {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .form-box p {
+        margin-bottom: 20px;
+    }
+
+    .form-box label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    .form-box input,
+    .form-box select {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #1e3966;
+        color: white;
+        font-size: 14px;
+    }
+
+    .form-box input:focus,
+    .form-box select:focus {
+        outline: none;
+        border-color: #4caf50;
+        background-color: #2e4f75;
+    }
+
+    .btn-save {
+        width: 100%;
+        padding: 12px;
+        background-color: #4caf50;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        font-size: 16px;
+        color: white;
+        margin-top: 10px;
+    }
+
+    .btn-save:hover {
+        background-color: #449d48;
+    }
+
+    .btn-back {
+        display: block;
+        margin-top: 20px;
+        text-align: center;
+        color: white;
+        text-decoration: underline;
+        font-size: 14px;
+    }
+
+    .alert-danger {
+        background-color: #dc3545;
+        padding: 10px;
+        border-radius: 5px;
+        color: white;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+</style>
+
+<div class="form-box">
     <h2>Sınav Programı Ekle</h2>
-    <form method="POST">
+
+    <form method="post">
         {% csrf_token %}
+        {% if form.errors %}
+            <div class="alert-danger">Lütfen tüm alanları kontrol edin.</div>
+        {% endif %}
         {{ form.as_p }}
-        
-        <br><br>
-        <button type="submit">Kaydet</button>
+        <button type="submit" class="btn-save">Kaydet</button>
     </form>
-    <a href="{% url 'sinav_listesi' %}">Sınav Listesine Geri Dön</a>
 
-
+    <a href="{% url 'sinav_listesi' %}" class="btn-back">← Sınav Listesine Geri Dön</a>
+</div>
 {% endblock %}
-
-
-

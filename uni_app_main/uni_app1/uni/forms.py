@@ -29,8 +29,6 @@ class DersProgramiForm(forms.ModelForm):
             'bitis_saati': forms.TimeInput(attrs={'type': 'time'}),
         }
 
-
-
 class CustomUserCreationForm(UserCreationForm):
     # Bölüm Başkanı tarafından belirlenen roller
     role_choices = [

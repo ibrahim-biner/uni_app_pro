@@ -1,28 +1,122 @@
 {% extends "base.html" %}
 
+{% block title %}Ders Programı{% endblock %}
+
 {% block content %}
+<style>
+    body {
+        background: linear-gradient(to bottom right, #0d1a3a, #1b2c59);
+        color: white;
+        font-family: Arial, sans-serif;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+    }
+
+    .card {
+        background-color: #13254b;
+        border-radius: 12px;
+        padding: 40px 30px;
+        max-width: 1100px;
+        margin: 50px auto;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .card h2 {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+        color: black;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    th {
+        background-color: #2e4b76;
+        color: white;
+        text-align: left;
+        padding: 12px;
+    }
+
+    td {
+        padding: 10px 12px;
+        text-align: left;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .btn-sil {
+        background-color: #dc3545;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 14px;
+        display: inline-block;
+    }
+
+    .btn-sil:hover {
+        background-color: #bb2d3b;
+    }
+
+    .btn-ekle {
+        display: block;
+        margin: 30px auto 0;
+        background-color: #198754;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .btn-ekle:hover {
+        background-color: #157347;
+    }
+</style>
+
+<div class="card">
     <h2>Ders Programı</h2>
-    <table border="1">
-        <tr>
-            <th>Ders</th>
-            <th>Gün</th>
-            <th>Saat</th>
-            <th>Öğretim Elemanı</th>
-            <th>Derslik</th>
-            <th>Sil</th>
-        </tr>
-        {% for program in programlar %}
-        <tr>
-            <td>{{ program.ders }}</td>
-            <td>{{ program.gun }}</td>
-            <td>{{ program.baslangic_saati }} - {{ program.bitis_saati }}</td>
-            <td>{{ program.ogretim_elemani }}</td>
-            <td>{{ program.derslik }}</td>
-            <td><a href="{% url 'ders_programi_sil' program.id %}">Sil</a></td>
-        </tr>
-        {% endfor %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>Ders</th>
+                <th>Gün</th>
+                <th>Saat</th>
+                <th>Öğretim Elemanı</th>
+                <th>Derslik</th>
+                <th>Sil</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for program in programlar %}
+            <tr>
+                <td>{{ program.ders }}</td>
+                <td>{{ program.gun }}</td>
+                <td>{{ program.baslangic_saati }} - {{ program.bitis_saati }}</td>
+                <td>{{ program.ogretim_elemani }}</td>
+                <td>{{ program.derslik }}</td>
+                <td>
+                    <a href="{% url 'ders_programi_sil' program.id %}" class="btn-sil">Sil</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align: center;">Henüz ders programı bulunmamaktadır.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
 
-    <br>
-    <a href="{% url 'ders_programi_ekle' %}">Yeni Ders Ekle</a>
+    <a href="{% url 'ders_programi_ekle' %}" class="btn-ekle">Yeni Ders Ekle</a>
+</div>
 {% endblock %}

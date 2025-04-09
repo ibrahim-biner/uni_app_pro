@@ -1,11 +1,72 @@
 {% extends "base.html" %}
 
+{% block title %}Derslik Detayı{% endblock %}
+
 {% block content %}
+<style>
+    body {
+        background: linear-gradient(to bottom right, #0d1a3a, #1b2c59);
+        color: white;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        font-family: Arial, sans-serif;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 50px auto;
+        background-color: #13254b;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    h2, h3 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+        color: black;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ccc;
+    }
+
+    th {
+        background-color: #1b2c59;
+        color: white;
+    }
+
+    tr:last-child td {
+        border-bottom: none;
+    }
+
+    .btn-back {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        color: white;
+        text-decoration: underline;
+        font-size: 14px;
+    }
+</style>
+
+<div class="container">
     <h2>{{ derslik.ad }} Dersliği</h2>
-    <p>Kapasite: {{ derslik.kapasite }}</p>
+    <p style="text-align: center;">Kapasite: {{ derslik.kapasite }}</p>
 
     <h3>Atanmış Dersler</h3>
-    <table border="1">
+    <table>
         <tr>
             <th>Ders</th>
             <th>Öğretim Elemanı</th>
@@ -15,19 +76,19 @@
         </tr>
         {% for ders in dersler %}
         <tr>
-            <td>{{ ders.ders.ad }}</td>  <!-- Ders ismi -->
-            <td>{{ ders.ogretim_elemani }}</td>  <!-- Öğretim elemanı DersProgrami tablosunda -->
-            <td>{{ ders.gun }}</td>  <!-- Gün bilgisi -->
-            <td>{{ ders.baslangic_saati }}</td>  
-            <td>{{ ders.bitis_saati }}</td>  
+            <td>{{ ders.ders.ad }}</td>
+            <td>{{ ders.ogretim_elemani }}</td>
+            <td>{{ ders.gun }}</td>
+            <td>{{ ders.baslangic_saati }}</td>
+            <td>{{ ders.bitis_saati }}</td>
         </tr>
         {% empty %}
         <tr>
-            <td colspan="4">Bu derslikte atanmış ders bulunmamaktadır.</td>
+            <td colspan="5" style="text-align: center;">Bu derslikte atanmış ders bulunmamaktadır.</td>
         </tr>
         {% endfor %}
     </table>
 
-    <br>
-    <a href="{% url 'derslik_listesi' %}">Derslik Listesine Geri Dön</a>
+    <a href="{% url 'derslik_listesi' %}" class="btn-back">← Derslik Listesine Geri Dön</a>
+</div>
 {% endblock %}
