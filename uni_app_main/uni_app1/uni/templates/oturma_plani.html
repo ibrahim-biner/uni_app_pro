@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Oturma Planı{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(to bottom right, #0d1a3a, #1b2c59);
+        color: white;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 50px auto;
+        background-color: #13254b;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    p {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+        color: black;
+        margin-top: 20px;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    td {
+        padding: 14px;
+        text-align: center;
+        border: 1px solid #ccc;
+        font-weight: bold;
+    }
+
+    .btn-download {
+        margin: 30px auto 0;
+        display: block;
+        padding: 12px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        text-decoration: none;
+        text-align: center;
+    }
+
+    .btn-download:hover {
+        background-color: #449d48;
+    }
+</style>
+
+<div class="container">
+    <h2>{{ sinav.ders.ad }} Sınav Oturma Düzeni</h2>
+    <p>Tarih: {{ sinav.tarih }} – Saat: {{ sinav.saat }}</p>
+    <p>Derslik: {{ derslik.ad }}</p>
+    <p>Gözetmen: {% if sinav.gozetmen %}{{ sinav.gozetmen.username }}{% else %}Yok{% endif %}</p>
+
+    <table>
+        {% for row in oturma_duzeni %}
+        <tr>
+            {% for cell in row %}
+            <td>
+                {% if cell %}
+                    {% if cell.username %}{{ cell.username }}{% else %}{{ cell }}{% endif %}
+                {% else %}
+                    Boş
+                {% endif %}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="{% url 'oturma_plani_pdf' sinav.id %}" class="btn-download">PDF Olarak İndir</a>
+</div>
+{% endblock %}

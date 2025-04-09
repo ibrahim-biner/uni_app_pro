@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser, Group
 from django.db import models
+from django.contrib.auth import get_user_model
 
 class CustomUser(AbstractUser):
     ROLE_CHOICES = (
@@ -16,3 +17,66 @@ class CustomUser(AbstractUser):
         if self.role:
             group, created = Group.objects.get_or_create(name=self.role)
             self.groups.add(group)
+
+
+
+User = get_user_model()  # Django'nun özel kullanıcı modelini alıyoruz
+
+class Ders(models.Model):
+    kod = models.CharField(max_length=10, unique=True)
+    ad = models.CharField(max_length=100)
+    ogrenci_sayisi = models.IntegerField(default=0) 
+    kredi = models.IntegerField()
+    bolum = models.CharField(max_length=100) # Hangi bölümde olduğu
+
+    def __str__(self):
+        return f"{self.kod} - {self.ad}"
+
+class Derslik(models.Model):
+    ad = models.CharField(max_length=50, unique=True)
+    kapasite = models.IntegerField()
+
+    def __str__(self):
+        return self.ad
+
+class DersProgrami(models.Model):
+    GUNLER = [
+        ('Pazartesi', 'Pazartesi'),
+        ('Salı', 'Salı'),
+        ('Çarşamba', 'Çarşamba'),
+        ('Perşembe', 'Perşembe'),
+        ('Cuma', 'Cuma'),
+    ]
+
+    ders = models.ForeignKey(Ders, on_delete=models.CASCADE)
+    derslik = models.ForeignKey(Derslik, on_delete=models.CASCADE)
+    ogretim_elemani = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role': 'akademisyen'})
+    gun = models.CharField(max_length=10, choices=GUNLER)
+    baslangic_saati = models.TimeField()
+    bitis_saati = models.TimeField()
+
+    class Meta:
+        unique_together = ['ders', 'gun', 'baslangic_saati']
+
+    def __str__(self):
+        return f"{self.ders} - {self.gun} ({self.baslangic_saati} - {self.bitis_saati})"
+    
+
+
+
+class SinavProgrami(models.Model):
+    ders = models.ForeignKey(Ders, on_delete=models.CASCADE)
+    derslik = models.ForeignKey(Derslik, on_delete=models.CASCADE)
+    tarih = models.DateField()
+    saat = models.TimeField()
+    gozetmen = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True, limit_choices_to={'role': 'akademisyen'})
+
+    def __str__(self):
+        return f"{self.ders.ad} - {self.tarih} {self.saat}"
+    
+
+
+class OturmaPlani(models.Model):
+    sinav = models.ForeignKey(SinavProgrami, on_delete=models.CASCADE)
+    ogrenci = models.ForeignKey(CustomUser, on_delete=models.CASCADE, limit_choices_to={'role': 'ogrenci'})
+    sira_no = models.IntegerField()  # Sıra numarası
