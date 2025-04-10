@@ -27,6 +27,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# Belirli bir süre sonra oturumu sonlandır (opsiyonel)
+SESSION_COOKIE_AGE = 3600  # saniye cinsinden → 1 saat
+
+# Her istekte oturum süresini güncellesin mi?
+SESSION_SAVE_EVERY_REQUEST = True
+
 AUTH_USER_MODEL = 'uni.CustomUser'
 # Application definition
 
@@ -52,6 +61,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'uni_app1.urls'
+
+
 
 TEMPLATES = [
     {

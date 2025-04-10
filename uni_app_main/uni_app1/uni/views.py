@@ -107,6 +107,7 @@ def ders_ekle(request):
 
     return render(request, 'ders_ekle.html', {'form': form})
 
+@login_required
 def ders_listesi(request):
     dersler = Ders.objects.all()  # Tüm dersleri al
     return render(request, 'ders_listesi.html', {'dersler': dersler})
@@ -123,11 +124,12 @@ def derslik_ekle(request):
 
     return render(request, 'derslik_ekle.html', {'form': form})
 
+@login_required
 def derslik_listesi(request):
     derslikler = Derslik.objects.all()
     return render(request, 'derslik_listesi.html', {'derslikler': derslikler})
 
-
+@login_required
 def ders_duzenle(request, ders_id):
     ders = get_object_or_404(Ders, pk=ders_id)
 
@@ -141,25 +143,26 @@ def ders_duzenle(request, ders_id):
 
     return render(request, 'duzenle_ders.html', {'form': form, 'ders': ders})
 
-
+@login_required
 def ders_sil(request, ders_id):
     ders = get_object_or_404(Ders, pk=ders_id)
     ders.delete()
     return redirect('ders_listesi')
 
+@login_required
 def derslik_sil(request, derslik_id):
     derslik = get_object_or_404(Derslik, pk=derslik_id)
     derslik.delete()  # Dersliği sil
     return redirect('derslik_listesi')  # Derslik listesine yönlendir
 
-
+@login_required
 def derslik_detay(request, derslik_id):
     derslik = get_object_or_404(Derslik, pk=derslik_id)
     dersler = DersProgrami.objects.filter(derslik=derslik)
     return render(request, "derslik_detay.html", {"derslik": derslik, "dersler": dersler})
 
 
-
+@login_required
 def sinav_ekle(request):
     if request.method == 'POST':
         form = SinavProgramiForm(request.POST)
@@ -171,6 +174,7 @@ def sinav_ekle(request):
     
     return render(request, 'sinav_ekle.html', {'form': form})
 
+@login_required
 def sinav_listesi(request):
     sinavlar = SinavProgrami.objects.all()
     return render(request, 'sinav_listesi.html', {'sinavlar': sinavlar})
@@ -178,7 +182,7 @@ def sinav_listesi(request):
 
 
 import math, random
-
+@login_required
 def oturma_plani_goruntule(request, sinav_id):
     # Seçilen sınavı alıyoruz
     sinav = get_object_or_404(SinavProgrami, id=sinav_id)
@@ -222,6 +226,7 @@ def oturma_plani_goruntule(request, sinav_id):
 
 from reportlab.lib.pagesizes import letter
 
+@login_required
 def oturma_plani_pdf(request, sinav_id):
     # Aynı oturma planını PDF olarak oluşturacağız
     sinav = get_object_or_404(SinavProgrami, id=sinav_id)
@@ -267,3 +272,8 @@ def oturma_plani_pdf(request, sinav_id):
     p.showPage()
     p.save()
     return response
+
+
+def user_logout(request):
+    logout(request)
+    return redirect('login') 
