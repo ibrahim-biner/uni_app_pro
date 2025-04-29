@@ -24,7 +24,11 @@ urlpatterns = [
     path('sinav-listesi/', sinav_listesi, name='sinav_listesi'),
     path('oturma-plani/<int:sinav_id>/', views.oturma_plani_goruntule, name='oturma_plani'),
     path('oturma-plani/pdf/<int:sinav_id>/', views.oturma_plani_pdf, name='oturma_plani_pdf'),
-    
+    path('assign_roles/', views.assign_roles, name='assign_roles'),
+    path('assign_role/<int:user_id>/', views.assign_role_to_user, name='assign_role_to_user'),
+    path('ders_programi/duzenle/<int:pk>/', views.ders_programi_duzenle, name='ders_programi_duzenle'),
 ]
+    
+
     
 

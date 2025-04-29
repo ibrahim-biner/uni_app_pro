@@ -81,8 +81,29 @@
     .btn-ekle:hover {
         background-color: #157347;
     }
-</style>
 
+    /* Ana Sayfa Butonu Stili */
+.btn-home {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    z-index: 1000;
+    text-decoration: none;
+}
+
+.btn-home:hover {
+    background-color: #449d48;
+}
+</style>
+<a href="{% url 'home' %}" class="btn-home">Ana Sayfa</a>
 <div class="card">
     <h2>Ders Programı</h2>
 
@@ -106,7 +127,12 @@
                 <td>{{ program.ogretim_elemani }}</td>
                 <td>{{ program.derslik }}</td>
                 <td>
+                    {% if request.user.role == "bolum_baskani" or request.user.role == "bolum_sekreteri" %}
+                    <a href="{% url 'ders_programi_duzenle' program.id %}" class="btn-sil" style="background-color: #0d6efd; margin-right: 5px;">Düzenle</a>
                     <a href="{% url 'ders_programi_sil' program.id %}" class="btn-sil">Sil</a>
+                    {% else %}
+                    <span style="color: gray;">Yetkisiz</span>
+                    {% endif %}
                 </td>
             </tr>
             {% empty %}

@@ -13,21 +13,21 @@ class CustomUser(AbstractUser):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        # Kullanıcı rolü belirtildiğinde ilgili gruba dahil edilir
+        
         if self.role:
             group, created = Group.objects.get_or_create(name=self.role)
             self.groups.add(group)
 
 
 
-User = get_user_model()  # Django'nun özel kullanıcı modelini alıyoruz
+User = get_user_model()  
 
 class Ders(models.Model):
     kod = models.CharField(max_length=10, unique=True)
     ad = models.CharField(max_length=100)
     ogrenci_sayisi = models.IntegerField(default=0) 
     kredi = models.IntegerField()
-    bolum = models.CharField(max_length=100) # Hangi bölümde olduğu
+    bolum = models.CharField(max_length=100) 
 
     def __str__(self):
         return f"{self.kod} - {self.ad}"

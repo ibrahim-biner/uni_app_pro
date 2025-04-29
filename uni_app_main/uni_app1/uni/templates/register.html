@@ -82,10 +82,33 @@
         text-align: center;
         margin-bottom: 15px;
     }
+
+    .btn-home {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    z-index: 1000;
+    text-decoration: none;
+    }
+
+    .btn-home:hover {
+        background-color: #449d48;
+    }
+
 </style>
 
 <div class="register-box">
     <h3>Kullanıcı Kaydı</h3>
+
+    <a href="{% url 'home' %}" class="btn-home">Ana Sayfa</a>
 
     <form method="post">
         {% csrf_token %}
@@ -116,9 +139,10 @@
             <input type="password" name="password2" id="id_password2" required>
         </div>
 
+        {% if request.user.role == "bolum_baskani" %}
         <div class="form-group">
             <label for="id_role">Rol:</label>
-            <select name="role" id="id_role" required>
+            <select name="role" id="id_role">
                 <option value="">Seçiniz</option>
                 <option value="ogrenci">Öğrenci</option>
                 <option value="akademisyen">Akademisyen</option>
@@ -126,12 +150,20 @@
                 <option value="bolum_baskani">Bölüm Başkanı</option>
             </select>
         </div>
-
+        {% elif request.user.role == "bolum_sekreteri" %}
+        <div class="form-group">
+            <label for="id_role">Rol:</label>
+            <select name="role" id="id_role">
+                <option value="norole" selected disabled>Rol Seçilemez</option>
+            </select>
+        </div>
+        <input type="hidden" name="role" value="ogrenci">
+        {% endif %}
         <button type="submit" class="btn-register">Kullanıcıyı Kaydet</button>
     </form>
 
     <div class="register-footer">
-        Zaten hesabınız var mı? <a href="{% url 'login' %}" style="color: #fff; text-decoration: underline;">Giriş Yap</a>
+        Hesabı Test Et  ... <a href="{% url 'login' %}" style="color: #fff; text-decoration: underline;"> Giriş Ekranı</a>
     </div>
 </div>
 {% endblock %}

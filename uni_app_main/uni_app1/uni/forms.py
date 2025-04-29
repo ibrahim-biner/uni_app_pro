@@ -29,6 +29,19 @@ class DersProgramiForm(forms.ModelForm):
             'bitis_saati': forms.TimeInput(attrs={'type': 'time'}),
         }
 
+class RoleSelectionForm(forms.ModelForm):
+    role_choices = [
+        ('akademisyen', 'Akademisyen'),
+        ('ogrenci', 'Öğrenci'),
+        ('bolum_sekreteri', 'Bölüm Sekreteri'),
+    ]
+    
+    role = forms.ChoiceField(choices=role_choices, label="Rol Seçin", required=True)
+
+    class Meta:
+        model = CustomUser
+        fields = ['role']
+
 class CustomUserCreationForm(UserCreationForm):
     # Bölüm Başkanı tarafından belirlenen roller
     role_choices = [
@@ -43,6 +56,14 @@ class CustomUserCreationForm(UserCreationForm):
         model = CustomUser
         fields = ['username', 'email', 'role', 'password1', 'password2']
 
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('request_user', None)
+        super(CustomUserCreationForm, self).__init__(*args, **kwargs)
+
+        # Eğer kullanıcı sekreter ise, rolü seçemez
+        if user and user.role == 'bolum_sekreteri':
+            self.fields['role'].initial = 'ogrenci'
+            self.fields['role'].widget = forms.HiddenInput()
 
 
 class SinavProgramiForm1(forms.ModelForm):

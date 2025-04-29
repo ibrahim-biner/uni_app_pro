@@ -78,7 +78,7 @@
     <div class="menu-grid">
         {% if user_role == "bolum_baskani" %}
             <div class="menu-box"><a href="{% url 'register' %}">Kullanıcı Ekle</a></div>
-            <div class="menu-box"><a href="{% url 'register' %}">Yetki Atama</a></div>
+            <div class="menu-box"><a href="{% url 'assign_roles' %}">Yetki Atama</a></div>
             <div class="menu-box"><a href="{% url 'ders_programi_list' %}">Ders Programı</a></div>
             <div class="menu-box"><a href="{% url 'sinav_listesi' %}">Sınav Programı</a></div>
             <div class="menu-box"><a href="{% url 'derslik_listesi' %}">Derslikler</a></div>

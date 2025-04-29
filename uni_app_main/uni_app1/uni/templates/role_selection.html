@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Rol Seçimi{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(to bottom right, #0d1a3a, #1b2c59);
+        font-family: Arial, sans-serif;
+        color: #fff;
+        min-height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .register-box {
+        background-color: #13254b;
+        padding: 40px 30px;
+        border-radius: 15px;
+        width: 450px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .register-box h3 {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .form-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        width: 140px;
+        margin-right: 10px;
+        font-weight: bold;
+        text-align: right;
+    }
+
+    .form-group input,
+    .form-group select {
+        flex: 1;
+        padding: 8px 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #1e3966;
+        color: white;
+    }
+
+    .btn-register {
+        width: 100%;
+        padding: 10px;
+        background-color: #4caf50;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        font-size: 16px;
+        color: white;
+        transition: background 0.3s;
+    }
+
+    .btn-register:hover {
+        background-color: #449d48;
+    }
+
+    .alert-danger {
+        background-color: #dc3545;
+        padding: 10px;
+        color: white;
+        border-radius: 5px;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .register-footer {
+        margin-top: 25px;
+        text-align: center;
+        font-size: 13px;
+        color: #ccc;
+    }
+</style>
+
+<div class="register-box">
+    <h3>{{ user.username }} için Rol Seçimi</h3>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        {% if form.errors %}
+            <div class="alert-danger">
+                Eksik ya da hatalı alanlar var. Lütfen kontrol edin.
+            </div>
+        {% endif %}
+
+        <div class="form-group">
+            <label for="id_role">Rol:</label>
+            {{ form.role }}
+        </div>
+
+        <button type="submit" class="btn-register">Rolü Güncelle</button>
+    </form>
+
+    <div class="register-footer">
+        <a href="{% url 'assign_roles' %}" style="color: #fff; text-decoration: underline;">Rol Atama Sayfasına Dön</a>
+    </div>
+</div>
+{% endblock %}

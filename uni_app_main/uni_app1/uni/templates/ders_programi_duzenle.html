@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Yeni Ders Programı{% endblock %}
+{% block title %}Ders Programını Düzenle{% endblock %}
 
 {% block content %}
 <style>
@@ -83,9 +83,9 @@
 </style>
 
 <div class="form-box">
-    <h2>Yeni Ders Programı Ekle</h2>
+    <h2>Ders Programını Düzenle</h2>
 
-    <form method="post">
+    <form method="POST">
         {% csrf_token %}
 
         {% if form.non_field_errors %}
@@ -126,7 +126,7 @@
             {{ form.derslik }}
         </div>
 
-        <button type="submit" class="btn-save">Kaydet</button>
+        <button type="submit" class="btn-save">Güncelle</button>
     </form>
 
     <a href="{% url 'ders_programi_list' %}" class="btn-back">← Ders Programına Geri Dön</a>

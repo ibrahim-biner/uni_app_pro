@@ -89,9 +89,21 @@
 <div class="form-box">
     <h2>Yeni Ders Ekle</h2>
 
+    
+
     <form method="post">
         {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+
         {{ form.as_p }}
+
         <button type="submit">Kaydet</button>
     </form>
 
