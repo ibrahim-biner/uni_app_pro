@@ -27,6 +27,20 @@ urlpatterns = [
     path('assign_roles/', views.assign_roles, name='assign_roles'),
     path('assign_role/<int:user_id>/', views.assign_role_to_user, name='assign_role_to_user'),
     path('ders_programi/duzenle/<int:pk>/', views.ders_programi_duzenle, name='ders_programi_duzenle'),
+    path('akademisyen/ders-programi/', views.akademisyen_ders_programi, name='akademisyen_ders_programi'),
+    path('akademisyen/ders-programi/pdf/', views.akademisyen_ders_programi_pdf, name='akademisyen_ders_programi_pdf'),
+     path('ders-programi/onayla/', views.ders_programini_onayla, name='ders_programi_onayla'),
+    path('ders-programi/onaylanmis/', views.onaylanmis_ders_programi, name='onaylanmis_ders_programi'),
+    path('ders-programi/yorum-ekle/', views.yorum_ekle, name='yorum_ekle'),
+    path('yorumlar/', views.yorumlari_gor, name='yorumlari_gor'),
+    path('yorumlar/sil/<int:yorum_id>/', views.yorum_sil, name='yorum_sil'),
+    path('sinav-onayla/', views.sinav_programini_onayla, name='sinav_programini_onayla'),
+    path('onayli-sinav-listesi/', views.onaylanmis_sinav_programi, name='onaylanmis_sinav_programi'),
+    path('sinav/<int:sinav_id>/sil/', views.sinav_sil, name='sinav_sil'),
+    path('sinav-yorum-ekle/', views.sinav_yorum_ekle, name='sinav_yorum_ekle'),
+    path('sinav-yorumlari/', views.sinav_yorumlari_gor, name='sinav_yorumlari_gor'),
+    path('sinav-yorum-sil/<int:yorum_id>/', views.sinav_yorum_sil, name='sinav_yorum_sil'),
+    
 ]
     
 

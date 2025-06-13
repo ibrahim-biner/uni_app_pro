@@ -12,11 +12,11 @@ from .models import DersProgrami
 from .forms import DersProgramiForm
 from .models import Ders, Derslik
 from .forms import DersForm, DerslikForm
-from .forms import DersDuzenleForm
+from .forms import DersDuzenleForm,SinavYorumForm
 from .models import SinavProgrami
 from .forms import SinavProgramiForm
 from django.http import JsonResponse
-from .models import SinavProgrami, CustomUser, OturmaPlani
+from .models import SinavProgrami, CustomUser, OturmaPlani,SinavYorum
 from reportlab.pdfgen import canvas
 from django.http import HttpResponse
 
@@ -582,3 +582,217 @@ def assign_role_to_user(request, user_id):
         form = RoleSelectionForm(instance=user)  # Mevcut kullanıcı verileriyle formu yükle
 
     return render(request, 'role_selection.html', {'form': form, 'user': user})
+
+
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+
+GUNLER = ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma']
+
+@login_required
+def akademisyen_ders_programi(request):
+    user = request.user
+    programlar = DersProgrami.objects.filter(ogretim_elemani=user).order_by('gun', 'baslangic_saati')
+    return render(request, 'akademisyen_ders_programi.html', {
+        'programlar': programlar,
+        'gunler': GUNLER,
+    })
+
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import cm
+from django.http import HttpResponse
+from io import BytesIO
+
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from io import BytesIO
+from django.contrib.auth.decorators import login_required
+from .models import DersProgrami
+
+@login_required
+def akademisyen_ders_programi_pdf(request):
+    akademisyen = request.user
+    programlar = DersProgrami.objects.filter(ogretim_elemani=akademisyen).order_by('gun', 'baslangic_saati')
+
+    template_path = 'akademisyen_ders_programi_pdf.html'  # HTML şablonun
+    context = {
+        'akademisyen': akademisyen,
+        'programlar': programlar,
+    }
+
+    # PDF çıktısı için response hazırla
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{akademisyen.username}_ders_programi.pdf"'
+
+    # HTML'i PDF'e dönüştür
+    template = get_template(template_path)
+    html = template.render(context)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result, encoding='UTF-8')
+
+    if not pdf.err:
+        response.write(result.getvalue())
+        return response
+    else:
+        return HttpResponse('PDF oluşturulurken hata oluştu.', status=500)
+    
+
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.shortcuts import render, redirect
+from .models import DersProgrami, OnaylanmisDersProgrami
+
+def is_bolum_baskani(user):
+    return user.role == 'bolum_baskani'
+
+@login_required
+@user_passes_test(is_bolum_baskani)
+def ders_programini_onayla(request):
+    if request.method == "POST":
+        # Önceki tüm onaylanmış programları sil
+        OnaylanmisDersProgrami.objects.all().delete()
+
+        # Mevcut ders programlarını onaylı tabloya tek tek kopyala
+        mevcut_programlar = DersProgrami.objects.all().distinct()
+        for p in mevcut_programlar:
+            OnaylanmisDersProgrami.objects.create(
+                ders=p.ders,
+                derslik=p.derslik,
+                ogretim_elemani=p.ogretim_elemani,
+                gun=p.gun,
+                baslangic_saati=p.baslangic_saati,
+                bitis_saati=p.bitis_saati
+            )
+        return redirect('onaylanmis_ders_programi')
+    
+    return redirect('ders_programi_list')
+
+@login_required
+def onaylanmis_ders_programi(request):
+    programlar = OnaylanmisDersProgrami.objects.all().order_by('gun', 'baslangic_saati')
+    return render(request, 'onaylanmis_ders_programi.html', {'programlar': programlar})
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import DersProgrami, DersProgramiYorum
+from .forms import YorumForm
+
+@login_required
+def yorum_ekle1(request):
+    if request.method == 'POST':
+        form = YorumForm(request.POST)
+        if form.is_valid():
+            yorum = form.save(commit=False)
+            yorum.yazar = request.user
+            # Program bilgisini form üzerinden alıyoruz
+            program_id = request.POST.get("program")
+            yorum.program = get_object_or_404(DersProgrami, id=program_id)
+            yorum.save()
+            return redirect('yorumlari_gor')
+    else:
+        form = YorumForm()
+
+    programlar = DersProgrami.objects.all()
+    return render(request, 'yorum_ekle.html', {'form': form, 'programlar': programlar})
+
+
+@login_required
+def yorum_ekle(request):
+    if request.method == 'POST':
+        form = YorumForm(request.POST)
+        if form.is_valid():
+            yorum = form.save(commit=False)
+            yorum.yazar = request.user
+            yorum.save()
+            return redirect('home')  # istersen 'yorumlari_gor' da yapabilirsin
+    else:
+        form = YorumForm()
+
+    return render(request, 'yorum_ekle.html', {'form': form})
+
+@login_required
+def yorumlari_gor(request):
+    yorumlar = DersProgramiYorum.objects.all().order_by('-tarih')
+    return render(request, 'yorumlari_gor.html', {'yorumlar': yorumlar})
+
+@login_required
+def yorum_sil(request, yorum_id):
+    yorum = get_object_or_404(DersProgramiYorum, id=yorum_id)
+    if yorum.yazar == request.user or request.user.role == 'bolum_baskani':
+        yorum.delete()
+    return redirect('yorumlari_gor')
+
+
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import SinavProgrami, OnaylanmisSinavProgrami
+
+def is_bolum_baskani(user):
+    return user.role == 'bolum_baskani'
+
+
+
+@login_required
+@user_passes_test(is_bolum_baskani)
+def sinav_programini_onayla(request):
+    if request.method == "POST":
+        OnaylanmisSinavProgrami.objects.all().delete()  # öncekini sil
+        for s in SinavProgrami.objects.all():
+            OnaylanmisSinavProgrami.objects.create(
+                ders=s.ders,
+                derslik=s.derslik,
+                tarih=s.tarih,
+                saat=s.saat,
+                gozetmen=s.gozetmen
+            )
+        return redirect('onaylanmis_sinav_programi')
+    return redirect('sinav_programi_listesi')
+
+@login_required
+def onaylanmis_sinav_programi(request):
+    sinavlar = OnaylanmisSinavProgrami.objects.all().order_by('tarih', 'saat')
+    return render(request, 'onaylanmis_sinav_programi.html', {'sinavlar': sinavlar})
+
+@login_required
+def sinav_sil(request, sinav_id):
+    if request.method == 'POST':
+        sinav = get_object_or_404(SinavProgrami, id=sinav_id)
+        sinav.delete()
+    return redirect('sinav_listesi')
+
+
+@login_required
+def sinav_yorum_ekle(request):
+    if request.method == 'POST':
+        form = SinavYorumForm(request.POST)
+        if form.is_valid():
+            yorum = form.save(commit=False)
+            yorum.yazar = request.user
+            yorum.save()
+            return redirect('home')  # Yorum sonrası yönlendirme
+    else:
+        form = SinavYorumForm()
+    return render(request, 'sinav_yorum_ekle.html', {'form': form})
+
+
+
+
+from django.contrib.auth.decorators import user_passes_test
+
+def is_bolum_baskani(user):
+    return user.role == 'bolum_baskani'
+
+@login_required
+@user_passes_test(is_bolum_baskani)
+def sinav_yorumlari_gor(request):
+    yorumlar = SinavYorum.objects.all().order_by('-tarih')
+    return render(request, 'sinav_yorumlari_gor.html', {'yorumlar': yorumlar})
+
+@login_required
+@user_passes_test(is_bolum_baskani)
+def sinav_yorum_sil(request, yorum_id):
+    yorum = get_object_or_404(SinavYorum, id=yorum_id)
+    yorum.delete()
+    return redirect('sinav_yorumlari_gor')

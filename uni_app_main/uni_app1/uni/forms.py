@@ -123,3 +123,47 @@ class SinavProgramiForm(forms.ModelForm):
 
         # Sadece akademisyenleri göster
         self.fields['gozetmen'].queryset = CustomUser.objects.filter(role='akademisyen')
+
+
+from django import forms
+from .models import DersProgramiYorum, DersProgrami
+
+class YorumForm1(forms.ModelForm):
+    class Meta:
+        model = DersProgramiYorum
+        fields = ['program', 'icerik']
+        widgets = {
+            'program': forms.Select(attrs={'class': 'form-select'}),
+            'icerik': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Yorumunuzu yazın...'}),
+        }
+
+
+from .models import DersProgramiYorum, DersProgrami
+from django import forms
+
+class YorumForm(forms.ModelForm):
+    program = forms.ModelChoiceField(
+        queryset=DersProgrami.objects.all(),
+        label='Ders Programı Seç',
+        widget=forms.Select()
+    )
+
+    class Meta:
+        model = DersProgramiYorum
+        fields = ['program', 'icerik']
+        widgets = {
+            'icerik': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Yorumunuzu yazın...'}),
+        }
+
+
+from .models import SinavYorum
+
+class SinavYorumForm(forms.ModelForm):
+    class Meta:
+        model = SinavYorum
+        fields = ['sinav', 'icerik']
+        widgets = {
+            'icerik': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Yorumunuzu yazın...'}),
+            'sinav': forms.Select()
+        }
+

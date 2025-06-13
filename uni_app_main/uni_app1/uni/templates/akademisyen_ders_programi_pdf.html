@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @page { size: A4; margin: 2cm; }
+
+        body {
+            font-family: DejaVu Sans, sans-serif;
+            font-size: 12px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #d1d1d1;
+        }
+    </style>
+</head>
+<body>
+    <h2>{{ akademisyen.get_full_name }} - Haftalik Ders Programi</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Gün</th>
+                <th>Saat</th>
+                <th>Ders</th>
+                <th>Derslik</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ders in programlar %}
+                <tr>
+                    <td>{{ ders.gun }}</td>
+                    <td>{{ ders.baslangic_saati }} - {{ ders.bitis_saati }}</td>
+                    <td>{{ ders.ders.ad }}</td>
+                    <td>{{ ders.derslik.ad }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">Ders programı bulunamadı.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

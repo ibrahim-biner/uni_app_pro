@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Sınav Yorumları{% endblock %}
+
+{% block content %}
+<style>
+    .form-box {
+        background-color: #f4f6f9;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px auto;
+        max-width: 800px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .yorum-kutusu {
+        background-color: #1e3966;
+        color: #fff;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        position: relative;
+    }
+
+    .yorum-kutusu p {
+        margin-top: 8px;
+        margin-bottom: 5px;
+    }
+
+    .yorum-kutusu small {
+        display: block;
+        margin-top: 10px;
+        font-size: 0.85em;
+        color: #ddd;
+    }
+
+    .btn-danger {
+        background-color: #d9534f;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        position: absolute;
+        right: 15px;
+        top: 15px;
+    }
+
+    .btn-danger:hover {
+        background-color: #c9302c;
+    }
+</style>
+
+<div class="form-box">
+    <h2 style="color: black;">Gelen Sınav Yorumları</h2>
+    {% for yorum in yorumlar %}
+        <div class="yorum-kutusu">
+            <strong>Gönderen:</strong> {{ yorum.yazar.get_full_name|default:yorum.yazar.username }}<br>
+            <strong>Sınav:</strong> {{ yorum.sinav }} <br>
+            <p><strong>İçerik:</strong> {{ yorum.icerik }}</p>
+            <small><strong>Yorum Tarihi:</strong> {{ yorum.tarih|date:"d.m.Y H:i" }}</small>
+
+            <form method="POST" action="{% url 'sinav_yorum_sil' yorum.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-danger">Okundu</button>
+            </form>
+        </div>
+    {% empty %}
+        <p style="color: black;">Henüz yorum yok.</p>
+    {% endfor %}
+</div>
+{% endblock %}

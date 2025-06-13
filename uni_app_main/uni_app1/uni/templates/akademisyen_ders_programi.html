@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ akademisyen.get_full_name }} - Ders Programı</title>
+    <style>
+        body {
+            font-family: DejaVu Sans, sans-serif;
+            margin: 40px;
+        }
+        h2 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #2e4b76;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h2>{{ akademisyen.get_full_name }} - Haftalık Ders Programı</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Gün</th>
+                <th>Saat</th>
+                <th>Ders</th>
+                <th>Derslik</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ders in programlar %}
+                <tr>
+                    <td>{{ ders.gun }}</td>
+                    <td>{{ ders.baslangic_saati }} - {{ ders.bitis_saati }}</td>
+                    <td>{{ ders.ders.ad }}</td>
+                    <td>{{ ders.derslik.ad }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">Ders programı bulunamadı.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'akademisyen_ders_programi_pdf' %}" class="btn-ekle" style="margin-top: 20px;">PDF Olarak İndirrr</a>
+</body>
+</html>

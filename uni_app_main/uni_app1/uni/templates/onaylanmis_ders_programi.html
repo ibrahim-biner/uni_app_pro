@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Onaylanmış Ders Programı{% endblock %}
+
+{% block content %}
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 30px;
+    }
+    th, td {
+        border: 1px solid #ffffff44;
+        padding: 10px;
+        text-align: center;
+        color: white;
+    }
+    th {
+        background-color: #1e3966;
+    }
+</style>
+
+<h2 style="text-align:center;">Onaylanmış Ders Programı</h2>
+<a href="{% url 'home' %}" class="btn-home">Ana Sayfa</a>
+<table>
+    <thead>
+        <tr>
+            <th>Gün</th>
+            <th>Saat</th>
+            <th>Ders</th>
+            <th>Öğretim Elemanı</th>
+            <th>Derslik</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ders in programlar %}
+        <tr>
+            <td>{{ ders.gun }}</td>
+            <td>{{ ders.baslangic_saati }} - {{ ders.bitis_saati }}</td>
+            <td>{{ ders.ders.ad }}</td>
+            <td>{{ program.ogretim_elemani }}</td>
+            <td>{{ ders.derslik.ad }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

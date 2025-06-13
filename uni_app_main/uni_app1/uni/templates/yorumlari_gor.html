@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Yorumlar{% endblock %}
+{% block content %}
+<div class="form-box">
+    <h2>Gelen Yorumlar</h2>
+    {% for yorum in yorumlar %}
+        <div style="background-color: #1e3966; padding: 15px; margin-bottom: 10px; border-radius: 5px;">
+            <strong>Gönderen:</strong> {{ yorum.yazar }}<br>
+            <strong>Ders:</strong> {{ yorum.program.ders.ad }}<br>
+            <p style="margin-top: 8px;"><strong>İçerik:</strong> {{ yorum.icerik }}</p>
+            <small><strong>Tarih:</strong> {{ yorum.tarih|date:"d.m.Y H:i" }}</small>
+            <form method="POST" action="{% url 'yorum_sil' yorum.id %}" style="display:inline; float:right;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-sm">Okundu</button>
+            </form>
+        </div>
+    {% empty %}
+        <p>Henüz yorum yok.</p>
+    {% endfor %}
+</div>
+{% endblock %}

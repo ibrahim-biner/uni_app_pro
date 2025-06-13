@@ -115,7 +115,7 @@
                 <th>Saat</th>
                 <th>Öğretim Elemanı</th>
                 <th>Derslik</th>
-                <th>Sil</th>
+                <th>Düzenle/Sil</th>
             </tr>
         </thead>
         <tbody>
@@ -142,7 +142,14 @@
             {% endfor %}
         </tbody>
     </table>
-
+    {% if request.user.role == "bolum_baskani" or request.user.role == "bolum_sekreteri" %}
     <a href="{% url 'ders_programi_ekle' %}" class="btn-ekle">Yeni Ders Ekle</a>
+    <form method="post" action="{% url 'ders_programi_onayla' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-success">Ders Programını Onayla</button>
+    </form>
+    {% else %}
+    <a href="{% url 'yorum_ekle' %}" class="btn-save">Yorum Ekle</a>
+    {% endif %}
 </div>
 {% endblock %}

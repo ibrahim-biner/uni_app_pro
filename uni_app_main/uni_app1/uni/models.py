@@ -80,3 +80,48 @@ class OturmaPlani(models.Model):
     sinav = models.ForeignKey(SinavProgrami, on_delete=models.CASCADE)
     ogrenci = models.ForeignKey(CustomUser, on_delete=models.CASCADE, limit_choices_to={'role': 'ogrenci'})
     sira_no = models.IntegerField()  # Sıra numarası
+
+
+class OnaylanmisDersProgrami(models.Model):
+    ders = models.ForeignKey(Ders, on_delete=models.CASCADE)
+    derslik = models.ForeignKey(Derslik, on_delete=models.CASCADE)
+    ogretim_elemani = models.ForeignKey(CustomUser, on_delete=models.CASCADE, limit_choices_to={'role': 'akademisyen'})
+    gun = models.CharField(max_length=10, choices=DersProgrami.GUNLER)
+    baslangic_saati = models.TimeField()
+    bitis_saati = models.TimeField()
+    onay_tarihi = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.ders.ad} - {self.gun} ({self.baslangic_saati}-{self.bitis_saati})"
+    
+
+class DersProgramiYorum(models.Model):
+    program = models.ForeignKey(DersProgrami, on_delete=models.CASCADE)
+    yazar = models.ForeignKey(CustomUser, on_delete=models.CASCADE, limit_choices_to={'role': 'akademisyen'})
+    icerik = models.TextField()
+    tarih = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.yazar.username} - {self.program} - {self.tarih.strftime('%Y-%m-%d %H:%M')}"
+    
+
+class OnaylanmisSinavProgrami(models.Model):
+    ders = models.ForeignKey(Ders, on_delete=models.CASCADE)
+    derslik = models.ForeignKey(Derslik, on_delete=models.CASCADE)
+    tarih = models.DateField()
+    saat = models.TimeField()
+    gozetmen = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True, limit_choices_to={'role': 'akademisyen'})
+
+    def __str__(self):
+        return f"{self.ders.ad} - {self.tarih} {self.saat}"
+
+
+class SinavYorum(models.Model):
+    sinav = models.ForeignKey(SinavProgrami, on_delete=models.CASCADE)
+    yazar = models.ForeignKey(CustomUser, on_delete=models.CASCADE, limit_choices_to={'role': 'akademisyen'})
+    icerik = models.TextField()
+    tarih = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.yazar.username} - {self.sinav} - {self.tarih.strftime('%Y-%m-%d %H:%M')}"
+

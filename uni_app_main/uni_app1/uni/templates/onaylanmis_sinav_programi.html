@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Onaylanmış Sınav Programı{% endblock %}
+{% block content %}
+<h2>Onaylanmış Sınav Programı</h2>
+<table>
+    <tr>
+        <th>Ders</th><th>Derslik</th><th>Tarih</th><th>Saat</th><th>Gözetmen</th>
+    </tr>
+    {% for sinav in sinavlar %}
+    <tr>
+        <td>{{ sinav.ders.ad }}</td>
+        <td>{{ sinav.derslik.ad }}</td>
+        <td>{{ sinav.tarih }}</td>
+        <td>{{ sinav.saat }}</td>
+        <td>{{ sinav.gozetmen }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% if user.role == 'akademisyen' %}
+    <form method="post" action="{% url 'sinav_yorum_ekle' %}">
+        {% csrf_token %}
+        <button type="submit">Yorum Ekle</button>
+    </form>
+    {% endif %}
+{% endblock %}
