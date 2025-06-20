@@ -22,7 +22,7 @@ urlpatterns = [
      path('derslik/<int:derslik_id>/', derslik_detay, name='derslik_detay'),
       path('sinav-ekle/', sinav_ekle, name='sinav_ekle'),
     path('sinav-listesi/', sinav_listesi, name='sinav_listesi'),
-    path('oturma-plani/<int:sinav_id>/', views.oturma_plani_goruntule, name='oturma_plani'),
+    #path('oturma-plani/<int:sinav_id>/', views.oturma_plani_goruntule, name='oturma_plani'),
     path('oturma-plani/pdf/<int:sinav_id>/', views.oturma_plani_pdf, name='oturma_plani_pdf'),
     path('assign_roles/', views.assign_roles, name='assign_roles'),
     path('assign_role/<int:user_id>/', views.assign_role_to_user, name='assign_role_to_user'),
@@ -40,6 +40,14 @@ urlpatterns = [
     path('sinav-yorum-ekle/', views.sinav_yorum_ekle, name='sinav_yorum_ekle'),
     path('sinav-yorumlari/', views.sinav_yorumlari_gor, name='sinav_yorumlari_gor'),
     path('sinav-yorum-sil/<int:yorum_id>/', views.sinav_yorum_sil, name='sinav_yorum_sil'),
+    path('sinav/<int:sinav_id>/oturma-olustur/', views.oturma_plani_olustur, name='oturma_plani_olustur'),
+    path('sinav/<int:sinav_id>/oturma-gor/', views.oturma_plani_goruntule, name='oturma_plani'),
+    path('akademisyen/verdigim-sinavlar/', views.akademisyen_verdigi_sinavlar, name='akademisyen_verdigi_sinavlar'),
+    path('bolum-sekreteri/ders-programi/', views.bolum_sekreteri_ders_programi, name='bolum_sekreteri_ders_programi'),
+    path('bolum-sekreteri/ders-programi/goster/<int:akademisyen_id>/', views.bolum_sekreteri_ders_programi_goster, name='bolum_sekreteri_ders_programi_goster'),
+    path('bolum-sekreteri/akademisyen/<int:akademisyen_id>/pdf/', views.secilen_akademisyen_ders_programi_pdf, name='secilen_akademisyen_pdf'),
+
+
     
 ]
     

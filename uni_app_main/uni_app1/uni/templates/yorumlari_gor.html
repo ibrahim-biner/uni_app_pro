@@ -1,21 +1,92 @@
 {% extends "base.html" %}
-{% block title %}Yorumlar{% endblock %}
+{% block title %}Ders Programı Yorumları{% endblock %}
+
 {% block content %}
+<style>
+    .form-box {
+        background-color: #f4f6f9;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px auto;
+        max-width: 800px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .yorum-kutusu {
+        background-color: #1e3966;
+        color: #fff;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        position: relative;
+    }
+
+    .yorum-kutusu p {
+        margin-top: 8px;
+        margin-bottom: 5px;
+    }
+
+    .yorum-kutusu small {
+        display: block;
+        margin-top: 10px;
+        font-size: 0.85em;
+        color: #ddd;
+    }
+
+    .btn-danger {
+        background-color: #d9534f;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        position: absolute;
+        right: 15px;
+        top: 15px;
+    }
+
+    .btn-danger:hover {
+        background-color: #c9302c;
+    }
+
+    .btn-home {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        z-index: 1000;
+        text-decoration: none;
+    }
+
+    .btn-home:hover {
+        background-color: #449d48;
+    }
+</style>
+
 <div class="form-box">
-    <h2>Gelen Yorumlar</h2>
+    <h2 style="color: black;">Gelen Ders Programı Yorumları</h2>
+    <a href="{% url 'home' %}" class="btn-home">Ana Sayfa</a>
     {% for yorum in yorumlar %}
-        <div style="background-color: #1e3966; padding: 15px; margin-bottom: 10px; border-radius: 5px;">
-            <strong>Gönderen:</strong> {{ yorum.yazar }}<br>
+        <div class="yorum-kutusu">
+            <strong>Gönderen:</strong> {{ yorum.yazar.get_full_name|default:yorum.yazar.username }}<br>
             <strong>Ders:</strong> {{ yorum.program.ders.ad }}<br>
-            <p style="margin-top: 8px;"><strong>İçerik:</strong> {{ yorum.icerik }}</p>
+            <p><strong>İçerik:</strong> {{ yorum.icerik }}</p>
             <small><strong>Tarih:</strong> {{ yorum.tarih|date:"d.m.Y H:i" }}</small>
-            <form method="POST" action="{% url 'yorum_sil' yorum.id %}" style="display:inline; float:right;">
+
+            <form method="POST" action="{% url 'yorum_sil' yorum.id %}">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-danger btn-sm">Okundu</button>
+                <button type="submit" class="btn-danger">Okundu</button>
             </form>
         </div>
     {% empty %}
-        <p>Henüz yorum yok.</p>
+        <p style="color: black;">Henüz yorum yok.</p>
     {% endfor %}
 </div>
 {% endblock %}

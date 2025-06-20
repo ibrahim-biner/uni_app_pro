@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ akademisyen.username }} - Sınav Programı</title>
+    <style>
+        body {
+            font-family: DejaVu Sans, sans-serif;
+            margin: 40px;
+            background-color: #0d1a3a;
+            color: white;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 32px;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ffffff66;
+            padding: 12px 15px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        th {
+            background-color: #1e3966;
+        }
+        tr:nth-child(even) {
+            background-color: #13254b;
+        }
+        .btn-home {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            z-index: 1000;
+            text-decoration: none;
+        }
+        .btn-home:hover {
+            background-color: #449d48;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>{{ akademisyen.username }} - Sınav Programı</h1>
+    <a href="{% url 'home' %}" class="btn-home">Ana Sayfa</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Ders</th>
+                <th>Derslik</th>
+                <th>Tarih</th>
+                <th>Saat</th>
+                <th>Gözetmen</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sinav in sinavlar %}
+                <tr>
+                    <td>{{ sinav.ders.ad }}</td>
+                    <td>{{ sinav.derslik.ad }}</td>
+                    <td>{{ sinav.tarih }}</td>
+                    <td>{{ sinav.saat }}</td>
+                    <td>
+                        {% if sinav.gozetmen %}
+                            {{ sinav.gozetmen.username }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" style="color: #ccc;">Sınav bulunamadı.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

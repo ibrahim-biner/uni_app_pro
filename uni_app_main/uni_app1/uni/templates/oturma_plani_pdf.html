@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: DejaVu Sans, sans-serif;
+            font-size: 12px;
+            color: #000;
+        }
+        h2, p {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        td {
+            border: 1px solid #000;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h2>{{ sinav.ders.ad }} Sınav Oturma Planı</h2>
+    <p>Tarih: {{ sinav.tarih }} – Saat: {{ sinav.saat }}</p>
+    <p>Derslik: {{ sinav.derslik.ad }}</p>
+    <p>Gözetmen: {% if sinav.gozetmen %}{{ sinav.gozetmen.get_full_name|default:sinav.gozetmen.username }}{% else %}Yok{% endif %}</p>
+
+    <table>
+        {% for row in oturma_duzeni %}
+        <tr>
+            {% for cell in row %}
+            <td>
+                {% if cell %}
+                    {{ cell.get_full_name|default:cell.username }}
+                {% else %}
+                    Boş
+                {% endif %}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

@@ -79,11 +79,30 @@
         font-style: italic;
         color: #ccc;
     }
+     .btn-home {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    z-index: 1000;
+    text-decoration: none;
+    }
+
+    .btn-home:hover {
+        background-color: #449d48;
+    }
 </style>
 
 <div class="list-container">
     <h2>Ders Listesi</h2>
-
+    <a href="{% url 'home' %}" class="btn-home">Ana Sayfa</a>
     {% if dersler %}
         {% for ders in dersler %}
             <div class="ders-item">
