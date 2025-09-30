@@ -102,6 +102,25 @@
 .btn-home:hover {
     background-color: #449d48;
 }
+
+.btn-mavi {
+    display: block;
+    margin: 20px auto 0;
+    background-color: #0d6efd;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    border: none;
+}
+
+.btn-mavi:hover {
+    background-color: #0b5ed7;
+}
+
 </style>
 <a href="{% url 'home' %}" class="btn-home">Ana Sayfa</a>
 <div class="card">
@@ -146,10 +165,12 @@
     <a href="{% url 'ders_programi_ekle' %}" class="btn-ekle">Yeni Ders Ekle</a>
     <form method="post" action="{% url 'ders_programi_onayla' %}">
     {% csrf_token %}
-    <button type="submit" class="btn btn-success">Ders Programını Onayla</button>
+        <button type="submit" class="btn-mavi">Ders Programını Onayla</button>
     </form>
     {% else %}
-    <a href="{% url 'yorum_ekle' %}" class="btn-save">Yorum Ekle</a>
+    <div style="text-align: center;">
+    <a href="{% url 'yorum_ekle' %}" class="btn-mavi">Yorum Ekle</a>
+    </div>
     {% endif %}
 </div>
 {% endblock %}

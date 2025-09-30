@@ -85,17 +85,23 @@
             <div class="menu-box"><a href="{% url 'ders_listesi' %}">Dersler</a></div>
             <div class="menu-box"><a href="{% url 'onaylanmis_ders_programi' %}">Onaylanmış Ders Programı</a></div>
             <div class="menu-box"><a href="{% url 'onaylanmis_sinav_programi' %}">Onaylanmış Sınav Programı</a></div>
+            <div class="menu-box"><a href="{% url 'sinav_yorumlari_gor' %}">Sınav Programı Yorumlar</a></div>
+            <div class="menu-box"><a href="{% url 'yorumlari_gor' %}">Ders Programı Yorumlar</a></div>
 
         {% elif user_role == "bolum_sekreteri" %}
             <div class="menu-box"><a href="{% url 'register' %}">Kullanıcı Ekle</a></div>
             <div class="menu-box"><a href="{% url 'ders_programi_list' %}">Ders Programı</a></div>
-            <div class="menu-box"><a href="{% url 'sinav_ekle' %}">Sınav Ekle</a></div>
+            <div class="menu-box"><a href="{% url 'sinav_listesi' %}">Sınav Programı</a></div>
             <div class="menu-box"><a href="{% url 'derslik_listesi' %}">Derslikler</a></div>
+            <div class="menu-box"><a href="{% url 'bolum_sekreteri_ders_programi' %}">Akademisyen Dersleri</a></div>
 
         {% elif user_role == "akademisyen" %}
             <div class="menu-box"><a href="{% url 'akademisyen_ders_programi' %}">Derslerim</a></div>
-            <div class="menu-box"><a href="{% url 'sinav_listesi' %}">Sınavlar</a></div>
+            <div class="menu-box"><a href="{% url 'akademisyen_verdigi_sinavlar' %}">Sınavlarım</a></div>
+            <div class="menu-box"><a href="{% url 'sinav_listesi' %}">Bölüm Sınav Programı</a></div>
             <div class="menu-box"><a href="{% url 'ders_programi_list' %}">Bölüm Ders Programı</a></div>
+            <div class="menu-box"><a href="{% url 'onaylanmis_ders_programi' %}">Onaylanmış Ders Programı</a></div>
+            <div class="menu-box"><a href="{% url 'onaylanmis_sinav_programi' %}">Onaylanmış Sınav Programı</a></div>
 
         {% elif user_role == "ogrenci" %}
             <div class="menu-box"><a href="#">Ders Kayıtlarım</a></div>

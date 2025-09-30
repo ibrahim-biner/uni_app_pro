@@ -71,7 +71,7 @@
 <div class="container">
     <h2>{{ sinav.ders.ad }} Sınav Oturma Düzeni</h2>
     <p>Tarih: {{ sinav.tarih }} – Saat: {{ sinav.saat }}</p>
-    <p>Derslik: {{ derslik.ad }}</p>
+    <p>Derslik: {{ sinav.derslik.ad }}</p>
     <p>Gözetmen: {% if sinav.gozetmen %}{{ sinav.gozetmen.username }}{% else %}Yok{% endif %}</p>
 
     <table>

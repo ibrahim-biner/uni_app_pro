@@ -48,10 +48,32 @@
     .btn-danger:hover {
         background-color: #c9302c;
     }
+
+    .btn-home {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    z-index: 1000;
+    text-decoration: none;
+    }
+
+    .btn-home:hover {
+        background-color: #449d48;
+    }
+
 </style>
 
 <div class="form-box">
     <h2 style="color: black;">Gelen Sınav Yorumları</h2>
+    <a href="{% url 'home' %}" class="btn-home">Ana Sayfa</a>
     {% for yorum in yorumlar %}
         <div class="yorum-kutusu">
             <strong>Gönderen:</strong> {{ yorum.yazar.get_full_name|default:yorum.yazar.username }}<br>

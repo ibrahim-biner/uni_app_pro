@@ -81,6 +81,10 @@ class OturmaPlani(models.Model):
     ogrenci = models.ForeignKey(CustomUser, on_delete=models.CASCADE, limit_choices_to={'role': 'ogrenci'})
     sira_no = models.IntegerField()  # Sıra numarası
 
+    class Meta:
+        unique_together = ('sinav', 'ogrenci')  # Aynı sınav için aynı öğrenci tekrar eklenemez
+
+
 
 class OnaylanmisDersProgrami(models.Model):
     ders = models.ForeignKey(Ders, on_delete=models.CASCADE)

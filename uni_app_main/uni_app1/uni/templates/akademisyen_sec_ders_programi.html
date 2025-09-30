@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Akademisyen Ders Programı Görüntüle{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #0d1a3a;
+        color: white;
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        max-width: 700px;
+        margin: 40px auto;
+        background-color: #13254b;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    }
+    h2 {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    select, button {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        margin-bottom: 20px;
+        border: none;
+        border-radius: 6px;
+    }
+    select {
+        background-color: #fff;
+        color: #000;
+    }
+    button {
+        background-color: #0d6efd;
+        color: white;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #0b5ed7;
+    }
+
+    .btn-home {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        z-index: 1000;
+        text-decoration: none;
+    }
+
+    .btn-home:hover {
+        background-color: #449d48;
+    }
+</style>
+
+<div class="container">
+    <h2>Akademisyen Seç</h2>
+    <a href="{% url 'home' %}" class="btn-home">Ana Sayfa</a>
+    <form method="get">
+        <select name="akademisyen_id" required>
+            <option value="">-- Akademisyen Seçin --</option>
+            {% for akademisyen in akademisyenler %}
+                <option value="{{ akademisyen.id }}"
+                {% if akademisyen.id|stringformat:"s" == request.GET.akademisyen_id %}selected{% endif %}>
+                    {{ akademisyen.username }}
+                </option>
+            {% endfor %}
+        </select>
+        <button type="submit">Ders Programını Göster</button>
+    </form>
+
+    {% if secilen and programlar %}
+    <h3 style="text-align:center; margin-top: 30px;">{{ secilen.username }} - Ders Programı</h3>
+    <table style="width:100%; border-collapse: collapse; margin-top:20px;">
+        <thead>
+            <tr style="background-color:#1e3966;">
+                <th style="padding: 10px;">Gün</th>
+                <th style="padding: 10px;">Saat</th>
+                <th style="padding: 10px;">Ders</th>
+                <th style="padding: 10px;">Derslik</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ders in programlar %}
+            <tr style="background-color:#ffffff11; text-align:center;">
+                <td style="padding: 10px;">{{ ders.gun }}</td>
+                <td style="padding: 10px;">{{ ders.baslangic_saati }} - {{ ders.bitis_saati }}</td>
+                <td style="padding: 10px;">{{ ders.ders.ad }}</td>
+                <td style="padding: 10px;">{{ ders.derslik.ad }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    
+    {% endif %}
+</div>
+{% endblock %}

@@ -69,16 +69,96 @@
         text-decoration: underline;
         font-size: 14px;
     }
+
+    .btn-mavi {
+    background-color: #0d6efd;
+    color: white;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-mavi:hover {
+    background-color: #0b5ed7;
+}
+
+.btn-gri {
+    background-color: #6c757d;
+    color: white;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-gri:hover {
+    background-color: #5a6268;
+}
+
+.btn-yorum-mavi {
+    display: block;
+    margin: 20px auto 0;
+    background-color: #0d6efd;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 15px;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.btn-yorum-mavi:hover {
+    background-color: #0b5ed7;
+}
+.btn-ekle {
+        display: block;
+        margin: 30px auto 0;
+        background-color: #198754;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .btn-ekle:hover {
+        background-color: #157347;
+    }
+
+    .btn-home {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    z-index: 1000;
+    text-decoration: none;
+    }
+
+    .btn-home:hover {
+        background-color: #449d48;
+    }
+
+
 </style>
 
 <div class="container">
     <h2>Sınav Programı Listesi</h2>
-    {% if user.role == 'bolum_baskani' %}
-    <form method="post" action="{% url 'sinav_programini_onayla' %}">
-        {% csrf_token %}
-        <button type="submit">Onayla</button>
-    </form>
-    {% endif %}
+    <a href="{% url 'home' %}" class="btn-home">Ana Sayfa</a>
     <table>
         <tr>
             <th>Ders</th>
@@ -97,17 +177,33 @@
             <td>{{ sinav.saat }}</td>
             <td>{% if sinav.gozetmen %}{{ sinav.gozetmen.username }}{% else %}-{% endif %}</td>
             <td>
-                {% if request.user.role == "bolum_baskani" or request.user.role == "bolum_sekreteri" %}
-                <a href="{% url 'oturma_plani' sinav.id %}"><button>Oturma Düzeni</button></a>
-                
-                {% else %}
-                <a href="{% url 'oturma_plani' sinav.id %}"><button>Oturma Düzeni Gör</button></a>
-                {% endif %}
+                {% with plan=sinav.oturmaplani_set.first %}
+                    {% if user.role == 'bolum_baskani' or user.role == 'bolum_sekreteri' %}
+                        {% if plan %}
+                            <a href="{% url 'oturma_plani' sinav.id %}"><button>Görüntüle</button></a>
+                            <a href="{% url 'oturma_plani_olustur' sinav.id %}"><button >Yeniden Oluştur</button></a>
+                        {% else %}
+                            <a href="{% url 'oturma_plani_olustur' sinav.id %}"><button>Oluştur</button></a>
+                        {% endif %}
+                    {% else %}
+                        {% if plan %}
+                            <a href="{% url 'oturma_plani' sinav.id %}"><button>Görüntüle</button></a>
+                        {% else %}
+                            <span style="color: gray;">Henüz oluşturulmadı</span>
+                        {% endif %}
+                    {% endif %}
+                {% endwith %}
             </td>
+
             <td>
                 <form method="post" action="{% url 'sinav_sil' sinav.id %}">
-                    {% csrf_token %}
-                    <button type="submit">Sil</button>
+                    
+                    {% if request.user.role == "bolum_baskani" or request.user.role == "bolum_sekreteri" %}
+                        {% csrf_token %}
+                        <button type="submit" style="background-color: red;">Sil</button>
+                    {% else %}
+                    <span style="color: gray;">Yetkisiz</span>
+                    {% endif %}
                 </form>
             </td>
         </tr>
@@ -118,9 +214,16 @@
         {% endfor %}
     </table>
     {% if request.user.role == "bolum_baskani" or request.user.role == "bolum_sekreteri" %}
-    <a href="{% url 'sinav_ekle' %}" class="btn-add">+ Yeni Sınav Ekle</a>
+    <a href="{% url 'sinav_ekle' %}" class="btn-ekle">Yeni Sınav Ekle</a>
     {% else %}
-    <a href="{% url 'sinav_yorum_ekle' %}" class="btn-add">Yorum Ekle</a>
+    <a href="{% url 'sinav_yorum_ekle' %}" class="btn-yorum-mavi">Yorum Ekle</a>
+    {% endif %}
+
+    {% if user.role == 'bolum_baskani' %}
+    <form method="post" action="{% url 'sinav_programini_onayla' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn-yorum-mavi">Onayla</button>
+    </form>
     {% endif %}
 </div>
 {% endblock %}

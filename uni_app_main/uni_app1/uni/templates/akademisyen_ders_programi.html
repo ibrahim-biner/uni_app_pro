@@ -1,36 +1,80 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>{{ akademisyen.get_full_name }} - Ders Programı</title>
+    <title>{{ akademisyen.username }} - Ders Programı</title>
     <style>
         body {
             font-family: DejaVu Sans, sans-serif;
             margin: 40px;
+            background-color: #0d1a3a;
+            color: white;
         }
-        h2 {
+        h1 {
             text-align: center;
+            margin-bottom: 30px;
+            font-size: 32px;
+            font-weight: bold;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 30px;
+            margin-top: 10px;
         }
         th, td {
-            border: 1px solid #333;
-            padding: 10px;
+            border: 1px solid #ffffff66;
+            padding: 12px 15px;
             text-align: center;
+            vertical-align: middle;
         }
         th {
-            background-color: #2e4b76;
-            color: white;
+            background-color: #1e3966;
         }
+        tr:nth-child(even) {
+            background-color: #13254b;
+        }
+        a.btn-pdf {
+            display: block;
+            margin: 25px auto 0 auto;  /* üst boşluk ve sağ-sol otomatik */
+            width: max-content;         /* buton genişliği içeriğe göre */
+            background-color: #198754;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            text-align: center;
+        }
+        a.btn-pdf:hover {
+            background-color: #157347;
+        }
+          .btn-home {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    z-index: 1000;
+    text-decoration: none;
+    }
+
+    .btn-home:hover {
+        background-color: #449d48;
+    }
+
     </style>
 </head>
 <body>
-    <h2>{{ akademisyen.get_full_name }} - Haftalık Ders Programı</h2>
-
+    
+    <h1>{{ user.username }} - Haftalık Ders Programı</h1>
+    <a href="{% url 'home' %}" class="btn-home">Ana Sayfa</a>
     <table>
         <thead>
             <tr>
@@ -50,11 +94,12 @@
                 </tr>
             {% empty %}
                 <tr>
-                    <td colspan="4">Ders programı bulunamadı.</td>
+                    <td colspan="4" style="color: #ccc;">Ders programı bulunamadı.</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
-    <a href="{% url 'akademisyen_ders_programi_pdf' %}" class="btn-ekle" style="margin-top: 20px;">PDF Olarak İndirrr</a>
+
+    <a href="{% url 'akademisyen_ders_programi_pdf' %}" class="btn-pdf">PDF Olarak İndir</a>
 </body>
 </html>

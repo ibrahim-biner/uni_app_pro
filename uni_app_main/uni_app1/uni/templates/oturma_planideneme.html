@@ -1,0 +1,16 @@
+<h2>{{ sinav }}</h2>
+<table border="1" cellspacing="0" cellpadding="10">
+    {% for satir in oturma_duzeni %}
+        <tr>
+            {% for ogrenci in satir %}
+                <td style="width: 100px; height: 60px; text-align: center;">
+                    {% if ogrenci %}
+                        {{ ogrenci.get_full_name|default:ogrenci.username }}
+                    {% else %}
+                        <span style="color: gray;">Boş</span>
+                    {% endif %}
+                </td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>

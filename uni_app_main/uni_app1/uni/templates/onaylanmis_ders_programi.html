@@ -17,6 +17,25 @@
     th {
         background-color: #1e3966;
     }
+     .btn-home {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    z-index: 1000;
+    text-decoration: none;
+    }
+
+    .btn-home:hover {
+        background-color: #449d48;
+    }
 </style>
 
 <h2 style="text-align:center;">Onaylanmış Ders Programı</h2>
@@ -37,7 +56,7 @@
             <td>{{ ders.gun }}</td>
             <td>{{ ders.baslangic_saati }} - {{ ders.bitis_saati }}</td>
             <td>{{ ders.ders.ad }}</td>
-            <td>{{ program.ogretim_elemani }}</td>
+            <td>{{ ders.ogretim_elemani }}</td>
             <td>{{ ders.derslik.ad }}</td>
         </tr>
         {% endfor %}

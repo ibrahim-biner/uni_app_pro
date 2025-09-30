@@ -1,26 +1,99 @@
 {% extends "base.html" %}
 {% block title %}Onaylanmış Sınav Programı{% endblock %}
+
 {% block content %}
-<h2>Onaylanmış Sınav Programı</h2>
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 30px;
+    }
+
+    th, td {
+        border: 1px solid #ffffff44;
+        padding: 10px;
+        text-align: center;
+        color: white;
+    }
+
+    th {
+        background-color: #1e3966;
+    }
+
+    .btn-home {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        z-index: 1000;
+        text-decoration: none;
+    }
+
+    .btn-home:hover {
+        background-color: #449d48;
+    }
+
+    .btn-yorum {
+        display: block;
+        margin: 30px auto 0;
+        background-color: #0d6efd;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 15px;
+        text-align: center;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-yorum:hover {
+        background-color: #0b5ed7;
+    }
+</style>
+
+<h2 style="text-align:center;">Onaylanmış Sınav Programı</h2>
+<a href="{% url 'home' %}" class="btn-home">Ana Sayfa</a>
+
 <table>
-    <tr>
-        <th>Ders</th><th>Derslik</th><th>Tarih</th><th>Saat</th><th>Gözetmen</th>
-    </tr>
-    {% for sinav in sinavlar %}
-    <tr>
-        <td>{{ sinav.ders.ad }}</td>
-        <td>{{ sinav.derslik.ad }}</td>
-        <td>{{ sinav.tarih }}</td>
-        <td>{{ sinav.saat }}</td>
-        <td>{{ sinav.gozetmen }}</td>
-    </tr>
-    {% endfor %}
+    <thead>
+        <tr>
+            <th>Ders</th>
+            <th>Derslik</th>
+            <th>Tarih</th>
+            <th>Saat</th>
+            <th>Gözetmen</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for sinav in sinavlar %}
+        <tr>
+            <td>{{ sinav.ders.ad }}</td>
+            <td>{{ sinav.derslik.ad }}</td>
+            <td>{{ sinav.tarih }}</td>
+            <td>{{ sinav.saat }}</td>
+            <td>{% if sinav.gozetmen %}{{ sinav.gozetmen.username }}{% else %}-{% endif %}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" style="color: #ccc;">Henüz onaylanmış sınav bulunmamaktadır.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 
 {% if user.role == 'akademisyen' %}
     <form method="post" action="{% url 'sinav_yorum_ekle' %}">
         {% csrf_token %}
-        <button type="submit">Yorum Ekle</button>
+        <button type="submit" class="btn-yorum">Yorum Ekle</button>
     </form>
-    {% endif %}
+{% endif %}
 {% endblock %}

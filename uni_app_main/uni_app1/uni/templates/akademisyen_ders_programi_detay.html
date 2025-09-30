@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}{{ secilen.username }} - Ders Programı{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #0d1a3a;
+        color: white;
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        max-width: 800px;
+        margin: 50px auto;
+        background-color: #13254b;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    }
+    h2 {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    th, td {
+        border: 1px solid #ffffff66;
+        padding: 12px;
+        text-align: center;
+    }
+    th {
+        background-color: #1e3966;
+    }
+    tr:nth-child(even) {
+        background-color: #1c2d4f;
+    }
+    .btn-pdf {
+        display: block;
+        margin: 30px auto 0 auto;
+        background-color: #198754;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        text-align: center;
+        width: max-content;
+    }
+    .btn-pdf:hover {
+        background-color: #157347;
+    }
+    .btn-home {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        z-index: 1000;
+        text-decoration: none;
+    }
+
+    .btn-home:hover {
+        background-color: #449d48;
+    }
+</style>
+
+<div class="container">
+    <h2>{{ secilen.get_full_name|default:secilen.username }} - Ders Programı</h2>
+    <a href="{% url 'home' %}" class="btn-home">Ana Sayfa</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Gün</th>
+                <th>Saat</th>
+                <th>Ders</th>
+                <th>Derslik</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ders in programlar %}
+            <tr>
+                <td>{{ ders.gun }}</td>
+                <td>{{ ders.baslangic_saati }} - {{ ders.bitis_saati }}</td>
+                <td>{{ ders.ders.ad }}</td>
+                <td>{{ ders.derslik.ad }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">Ders programı bulunamadı.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+        <a href="{% url 'secilen_akademisyen_pdf' akademisyen.id %}" class="btn-pdf">PDF Olarak İndir</a>
+
+</div>
+{% endblock %}
